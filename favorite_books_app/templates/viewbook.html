@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <h1>Welcome {{user.first_name}}</h1>
+        <h3>{{book.title}}</h3>
+        <h4>{{book.user.first_name}}</h4>
+        <h4>added on {{book.created_at}}</h4>
+        <h4>last updated {{book.updated_at}}</h4>
+        <h4>{{book.description}}</h4>
+        {% if book.user_id == request.session.user_id %}
+        
+            <form action="/favorite/books/{{book.id}}/update" method = 'POST'>
+            {% csrf_token %}
+            Title <input type="text" name = 'title'>
+            <br>
+            Description <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+            <input type="submit">
+            <a href="/favorite/books/{{book.id}}/delete">Delete</a>
+        </form>
+        {% endif %}
+        <br>
+        <h2>Users who like this book</h2>
+        {% for user_favorite in book.favorite.all %}
+        <p>{{user_favorite.first_name}}</p>
+        {% endfor %}
+        <a href="/favorite/books/{{book.id}}/like">like</a>
+        <a href="/favorite/books/{{book.id}}/unlike">unlike</a>
+</body>
+</html>
